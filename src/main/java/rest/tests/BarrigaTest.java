@@ -35,22 +35,48 @@ public class BarrigaTest extends BaseTest {
         login.put("senha", userPassword);
 
         String token = given()
-                .body(login)
-                .when()
-                .post("/signin")
-                .then()
-                .statusCode(200)
-                .extract().path("token")
+            .body(login)
+        .when()
+            .post("/signin")
+        .then()
+            .statusCode(200)
+            .extract().path("token")
                 ;
 
         given()
-                .header("Authorization", "JWT " + token)
-                .body("{\"nome\": \"conta qualquer\"}")
-                .when()
-                .post("/contas")
-                .then()
-                .statusCode(201)
+            .header("Authorization", "JWT " + token)
+            .body("{\"nome\": \"conta qualquer\"}")
+        .when()
+            .post("/contas")
+        .then()
+            .statusCode(201)
         ;
 
+    }
+
+    @Test
+    public void deveAlterarContaComSucesso() {
+        Map<String, String> login = new HashMap<>();
+
+        login.put("email", userEmail);
+        login.put("senha", userPassword);
+
+        String token = given()
+            .body(login)
+        .when()
+            .post("/signin")
+        .then()
+            .statusCode(200)
+            .extract().path("token")
+                ;
+
+        given()
+            .header("Authorization", "JWT " + token)
+            .body("{\"nome\": \"conta alterada\"}")
+        .when()
+            .put("/contas/2590386")
+        .then()
+            .statusCode(200)
+        ;
     }
 }
