@@ -4,6 +4,9 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
 import rest.core.BaseTest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.*;
 
 public class BarrigaTest extends BaseTest {
@@ -21,5 +24,33 @@ public class BarrigaTest extends BaseTest {
         .then()
                 .statusCode(401)
         ;
+    }
+
+
+    @Test
+    public void deveIncluirContaComSucesso() {
+        Map<String, String> login = new HashMap<>();
+
+        login.put("email", userEmail);
+        login.put("senha", userPassword);
+
+        String token = given()
+                .body(login)
+                .when()
+                .post("/signin")
+                .then()
+                .statusCode(200)
+                .extract().path("token")
+                ;
+
+        given()
+                .header("Authorization", "JWT " + token)
+                .body("{\"nome\": \"conta qualquer\"}")
+                .when()
+                .post("/contas")
+                .then()
+                .statusCode(201)
+        ;
+
     }
 }
