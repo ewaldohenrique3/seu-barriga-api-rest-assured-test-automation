@@ -48,19 +48,6 @@ public class BarrigaTest extends BaseTest {
 
     @Test
     public void deveIncluirContaComSucesso() {
-        Map<String, String> login = new HashMap<>();
-
-        login.put("email", userEmail);
-        login.put("senha", userPassword);
-
-        String token = given()
-            .body(login)
-        .when()
-            .post("/signin")
-        .then()
-            .statusCode(200)
-            .extract().path("token")
-                ;
 
         given()
             .header("Authorization", "JWT " + token)
