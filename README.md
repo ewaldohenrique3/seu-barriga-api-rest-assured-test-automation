@@ -226,7 +226,5 @@ Henrique Soares
 ---
 
 # 📣 Sobre o projeto
-
 Este projeto foi desenvolvido com foco em estudos de **automação de testes de API**, simulando práticas utilizadas no mercado de QA.
-
 ---
