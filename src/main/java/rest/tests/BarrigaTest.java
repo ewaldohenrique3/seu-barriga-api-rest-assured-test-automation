@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 public class BarrigaTest extends BaseTest {
 
@@ -69,6 +70,19 @@ public class BarrigaTest extends BaseTest {
             .put("/contas/2590386")
         .then()
             .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void naoDeveInserirContaMesmoNome() {
+        given()
+            .header("Authorization", "JWT " + token)
+            .body("{\"nome\": \"conta alterada\"}")
+        .when()
+            .post("/contas")
+        .then()
+            .statusCode(400)
+            .body("error", is("Já existe uma conta com esse nome!"))
         ;
     }
 }
